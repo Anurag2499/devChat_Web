@@ -1,13 +1,12 @@
 import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
-
 const themes = ['dark', 'light', 'aqua', 'valentine', 'coffee'];
-function NavBar() {
+
+const NavBar = () => {
   const [selectedTheme, setSelectedTheme] = useState(
     localStorage.getItem('theme') || 'dark'
   );
-
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', selectedTheme);
     localStorage.setItem('theme', selectedTheme);
@@ -17,17 +16,16 @@ function NavBar() {
     setSelectedTheme(e.target.value);
   };
   const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
-
   return (
-    <div className="navbar bg-base-300 shadow-sm">
-      <div className="flex-1">
-        <a className="btn btn-ghost text-xl">👩‍💻DevChat👨‍💻</a>
+    <div className="navbar bg-base-300 shadow-lg">
+      <div className="flex-1 ">
+        <a className="btn btn-ghost text-xl hover:bg-base-200">👩‍💻DevChat👨‍💻</a>
       </div>
       <div className="flex gap-2">
         {/* this is the theme dropdown */}
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn m-1">
-            Theme
+            {capitalize(selectedTheme)}
             <svg
               width="12px"
               height="12px"
@@ -38,10 +36,9 @@ function NavBar() {
               <path d="M1799 349l242 241-1017 1017L7 590l242-241 775 775 775-775z"></path>
             </svg>
           </div>
-
           <ul
             tabIndex={0}
-            className="dropdown-content bg-base-300 rounded-box z-10 w-52 p-2 shadow-2xl"
+            className="dropdown-content bg-base-300 rounded-box z-10 w-44 p-2 shadow-2xl"
           >
             {themes.map((theme) => (
               <li key={theme}>
@@ -60,7 +57,6 @@ function NavBar() {
             ))}
           </ul>
         </div>
-
         {/* this is the profile pic */}
         <div className="dropdown dropdown-end mx-5">
           <div
@@ -96,6 +92,6 @@ function NavBar() {
       </div>
     </div>
   );
-}
+};
 
 export default NavBar;
