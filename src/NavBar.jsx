@@ -12,6 +12,7 @@ const NavBar = () => {
     localStorage.setItem('theme', selectedTheme);
   }, [selectedTheme]);
 
+  //   this is the handle theme dynamic value setting
   const handleThemeChange = (e) => {
     setSelectedTheme(e.target.value);
   };
