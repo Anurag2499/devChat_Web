@@ -1,11 +1,18 @@
+/* eslint-disable no-unused-vars */
+import axios from 'axios';
 import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { BASE_URL } from '../utils/constant';
+import { removeUser } from '../utils/userSlice';
 const themes = ['dark', 'light', 'aqua', 'valentine', 'coffee'];
 
 const NavBar = () => {
   const user = useSelector((store) => store.user);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [selectedTheme, setSelectedTheme] = useState(
     localStorage.getItem('theme') || 'dark'
   );
@@ -18,11 +25,46 @@ const NavBar = () => {
   const handleThemeChange = (e) => {
     setSelectedTheme(e.target.value);
   };
+
+  const handleLogout = async () => {
+    try {
+      await axios.post(
+        // BASE_URL + '/logout',
+        'http://localhost:7777/logout',
+        {},
+        {
+          withCredentials: true,
+        }
+      );
+      dispatch(removeUser());
+      return navigate('/login');
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleHome = () => {
+    try {
+      if (!user) {
+        console.log('user not present');
+        navigate('/login');
+      } else navigate('/');
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
   return (
     <div className="navbar bg-base-300 shadow-lg">
       <div className="flex-1 ">
-        <a className="btn btn-ghost text-xl hover:bg-base-200">👩‍💻DevChat👨‍💻</a>
+        <a
+          onClick={() => handleHome()}
+          // to="/"
+          className="btn btn-ghost text-xl hover:bg-base-200"
+        >
+          👩‍💻DevChat👨‍💻
+        </a>
       </div>
       <div className="flex gap-2">
         {/* this is the theme dropdown */}
@@ -78,16 +120,16 @@ const NavBar = () => {
               className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
             >
               <li>
-                <a className="justify-between">
+                <Link to="/profile" className="justify-between">
                   Profile
                   <span className="badge">New</span>
-                </a>
+                </Link>
               </li>
               <li>
                 <a>Settings</a>
               </li>
               <li>
-                <a>Logout</a>
+                <Link onClick={() => handleLogout()}>Logout</Link>
               </li>
             </ul>
           </div>

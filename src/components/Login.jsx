@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
@@ -8,6 +9,7 @@ import { BASE_URL } from '../utils/constant';
 const Login = () => {
   const [email, setEmail] = useState('anurag@gmail.com');
   const [password, setPassword] = useState('Anurag@123');
+  const [error, setError] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -24,7 +26,7 @@ const Login = () => {
       dispatch(addUser(res.data));
       navigate('/');
     } catch (err) {
-      console.log(err);
+      setError(err?.response?.data?.message || 'Something went wrong!');
     }
   };
 
@@ -60,17 +62,19 @@ const Login = () => {
                   required
                   placeholder="Email/Username"
                   // pattern="[A-Za-z][A-Za-`z0-9\-]*"
-                  minlength="4"
-                  maxlength="30"
+                  minLength="4"
+                  maxLength="30"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => {
+                    setEmail(e.target.value), setError('');
+                  }}
                   title="Only letters, numbers or dash"
                   // className="text-gray-500"
                 />
               </label>
             </div>
 
-            <div className="form-control my-4">
+            <div className="form-control mt-4">
               <div className="flex flex-row items-start">
                 <span className="label-text">Password</span>
               </div>
@@ -95,16 +99,19 @@ const Login = () => {
                   placeholder="Password"
                   // className="text-gray-500"
                   className="text-"
-                  minlength="6"
-                  maxlength="30"
+                  minLength="6"
+                  maxLength="30"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => {
+                    setPassword(e.target.value), setError('');
+                  }}
                   title="Only letters, numbers or dash"
                 />
               </label>
             </div>
           </div>
-          <div className="card-actions justify-end">
+          <p className="text-red-500">{error}</p>
+          <div className="card-actions justify-end mt-1">
             <button
               className="btn btn-outline btn-default"
               onClick={handleLogin}
