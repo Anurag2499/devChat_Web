@@ -63,7 +63,7 @@ const NavBar = () => {
           // to="/"
           className="btn btn-ghost text-xl hover:bg-base-200"
         >
-          👩‍💻DevChat👨‍💻
+          DevChat
         </a>
       </div>
       <div className="flex gap-2">
