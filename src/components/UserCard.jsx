@@ -2,6 +2,7 @@
 import React from 'react';
 
 const UserCard = ({ user, editFlag }) => {
+  console.log('user-->', user);
   const { firstName, lastName, age, photoUrl, gender, about } = user;
   console.log('user', user);
   return (

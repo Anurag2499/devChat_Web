@@ -1,13 +1,12 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { BASE_URL } from '../utils/constant';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { addConnections } from '../utils/connectionSlice';
 
 const Connections = () => {
-  const [connections, setConnections] = useState([]);
-  //   const connections = useSelector((store) => store.connections);
+  const connections = useSelector((store) => store.connections);
   console.log(connections);
   const dispatch = useDispatch();
 
@@ -17,8 +16,7 @@ const Connections = () => {
         withCredentials: true,
       });
       //  console.log(res.data);
-      //  dispatch(addConnections(res.data.data));
-      setConnections(res.data.data);
+      dispatch(addConnections(res.data.data));
     } catch (err) {
       console.log(err);
     }
@@ -31,8 +29,8 @@ const Connections = () => {
   if (!connections) return null;
   if (connections.length === 0) {
     return (
-      <div>
-        <h1>No Connections</h1>
+      <div className="flex justify-center my-10">
+        <h1 className="font-bold">You have No Connections, Haha!!</h1>
       </div>
     );
   }
@@ -43,13 +41,16 @@ const Connections = () => {
         <h1 className="font-bold text-2xl text-center my-3">Connections</h1>
       </div>
       {connections.map((connection) => {
-        const { firstName, lastName, age, gender, photoUrl, about } =
+        const { _id, firstName, lastName, age, gender, photoUrl, about } =
           connection;
         return (
-          <div className="card card-side bg-base-300 shadow-sm w-full md:w-1/2 mx-auto my-3">
+          <div
+            key={_id}
+            className="card card-side bg-base-300 shadow-sm w-full md:w-1/2 mx-auto my-3"
+          >
             <figure className="ml-2">
               <img
-                className="h-30 rounded-full"
+                className="h-30 w-25 rounded-full"
                 src={photoUrl}
                 alt="ProfilePic"
               />
