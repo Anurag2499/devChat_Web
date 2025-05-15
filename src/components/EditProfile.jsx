@@ -14,14 +14,12 @@ const EditProfile = ({ user }) => {
   const [about, setAbout] = useState(user.about);
   const [photoUrl, setPhotoUrl] = useState(user.photoUrl);
   const [error, setError] = useState('');
-  const [dataSaved, setDataSaved] = useState('');
   const [toast, setToast] = useState(false);
   const dispatch = useDispatch();
 
   //saving the profile
   const saveProfile = async () => {
     setError('');
-    setDataSaved('');
     try {
       const res = await axios.patch(
         'http://localhost:7777/profile/edit',
@@ -33,14 +31,11 @@ const EditProfile = ({ user }) => {
           withCredentials: true,
         }
       );
-      console.log('res', res);
-      console.log('asdf', res.data.user);
       dispatch(addUser(res.data.user));
       setToast(true);
       setTimeout(() => {
         setToast(false);
       }, 3000);
-      // setDataSaved('Profile updated successfully!');
     } catch (err) {
       console.log('err', err);
       console.log('err', err.response.data);
@@ -80,7 +75,6 @@ const EditProfile = ({ user }) => {
           value={gender}
           onChange={(e) => setGender(e.target.value)}
         >
-          {/* <option value="">Select Gender</option> */}
           <option value="male">Male</option>
           <option value="female">Female</option>
         </select>
@@ -100,7 +94,6 @@ const EditProfile = ({ user }) => {
           placeholder="Tell us something about yourself..."
         ></textarea>
         {error && <p className="text-red-500">{error}</p>}
-        {/* {dataSaved && <p className="text-green-500">{dataSaved}</p>} */}
         <button
           className="btn btn-primary my-3 w-40 mx-auto"
           onClick={() => saveProfile()}
