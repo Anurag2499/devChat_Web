@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { BASE_URL } from '../utils/constant';
 import { removeUser } from '../utils/userSlice';
+import { emptyFeed } from '../utils/feedSlice';
 const themes = ['dark', 'light', 'aqua', 'valentine', 'coffee'];
 
 const NavBar = () => {

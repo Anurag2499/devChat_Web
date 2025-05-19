@@ -7,9 +7,13 @@ import { useNavigate } from 'react-router-dom';
 import { BASE_URL } from '../utils/constant';
 
 const Login = () => {
-  const [email, setEmail] = useState('anurag@gmail.com');
-  const [password, setPassword] = useState('Anurag@123');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [age, setAge] = useState('');
+  const [email, setEmail] = useState('@gmail.com');
+  const [password, setPassword] = useState('@123');
   const [error, setError] = useState('');
+  const [isLogin, setIsLogin] = useState(true);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -30,15 +34,76 @@ const Login = () => {
     }
   };
 
+  const handleSignUp = async () => {
+    try {
+      const res = await axios.post(
+        BASE_URL + '/signup',
+        {
+          firstName,
+          lastName,
+          emailId: email,
+          password,
+        },
+        { withCredentials: true }
+      );
+      console.log(res.data.data);
+      dispatch(addUser(res.data.data));
+      return navigate('/profile');
+    } catch (err) {
+      console.log(err);
+      setError(err?.response?.data || 'Something went wrong!');
+    }
+  };
+
   return (
     <div className="flex my-50 justify-center mx-20">
       <div className="card bg-base-300 w-96">
         <div className="card-body items-center text-center">
-          <h1 className="card-title">Login</h1>
+          <h1 className="card-title">{isLogin ? 'Login' : 'Sign Up'}</h1>
           <div>
-            <div className="form-control my-4">
+            {!isLogin && (
+              <>
+                <div className="form-control mt-4 mb-2">
+                  <div className=" flex flex-row items-start">
+                    <span className="label-text">First Name</span>
+                  </div>
+                  <label className="input validator my-1">
+                    <input
+                      type="text"
+                      required
+                      placeholder="First Name"
+                      value={firstName}
+                      onChange={(e) => {
+                        setFirstName(e.target.value), setError('');
+                      }}
+                      title="Only letters, numbers or dash"
+                      // className="text-gray-500"
+                    />
+                  </label>
+                </div>
+                <div className="form-control my-2">
+                  <div className=" flex flex-row items-start">
+                    <span className="label-text">Last Name</span>
+                  </div>
+                  <label className="input validator my-1">
+                    <input
+                      type="text"
+                      required
+                      placeholder="Last Name"
+                      value={lastName}
+                      onChange={(e) => {
+                        setLastName(e.target.value), setError('');
+                      }}
+                      title="Only letters, numbers or dash"
+                      // className="text-gray-500"
+                    />
+                  </label>
+                </div>
+              </>
+            )}
+            <div className="form-control my-2">
               <div className=" flex flex-row items-start">
-                <span className="label-text">Username</span>
+                <span className="label-text">Email:</span>
               </div>
               <label className="input validator my-1">
                 <svg
@@ -74,7 +139,7 @@ const Login = () => {
               </label>
             </div>
 
-            <div className="form-control mt-4">
+            <div className="form-control my-2">
               <div className="flex flex-row items-start">
                 <span className="label-text">Password</span>
               </div>
@@ -114,11 +179,14 @@ const Login = () => {
           <div className="card-actions justify-end mt-1">
             <button
               className="btn btn-outline btn-default"
-              onClick={handleLogin}
+              onClick={isLogin ? handleLogin : handleSignUp}
             >
-              Login
+              {isLogin ? 'Login' : 'Sign Up'}
             </button>
           </div>
+          <p className="text-sm my-2" onClick={() => setIsLogin(!isLogin)}>
+            {isLogin ? 'New User? Signup Here' : 'Existing User? Login Here'}
+          </p>
         </div>
       </div>
     </div>
