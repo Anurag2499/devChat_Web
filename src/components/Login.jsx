@@ -1,10 +1,11 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addUser } from '../utils/userSlice';
 import { useNavigate } from 'react-router-dom';
 import { BASE_URL } from '../utils/constant';
+import { emptyFeed } from '../utils/feedSlice';
 
 const Login = () => {
   const [firstName, setFirstName] = useState('');
@@ -28,6 +29,7 @@ const Login = () => {
         { withCredentials: true }
       );
       dispatch(addUser(res.data));
+      dispatch(emptyFeed());
       navigate('/');
     } catch (err) {
       setError(err?.response?.data?.message || 'Something went wrong!');
@@ -184,7 +186,10 @@ const Login = () => {
               {isLogin ? 'Login' : 'Sign Up'}
             </button>
           </div>
-          <p className="text-sm my-2" onClick={() => setIsLogin(!isLogin)}>
+          <p
+            className="text-sm my-2 cursor-pointer"
+            onClick={() => setIsLogin(!isLogin)}
+          >
             {isLogin ? 'New User? Signup Here' : 'Existing User? Login Here'}
           </p>
         </div>
