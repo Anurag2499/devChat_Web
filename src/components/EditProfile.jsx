@@ -22,7 +22,7 @@ const EditProfile = ({ user }) => {
     setError('');
     try {
       const res = await axios.patch(
-        'http://localhost:7777/profile/edit',
+        BASE_URL + '/profile/edit',
         { firstName, lastName, age, gender, about, photoUrl },
         {
           headers: {
