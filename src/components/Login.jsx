@@ -26,7 +26,7 @@ const Login = () => {
           emailId: email,
           password,
         },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       dispatch(addUser(res.data));
       dispatch(emptyFeed());
@@ -46,7 +46,7 @@ const Login = () => {
           emailId: email,
           password,
         },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       console.log(res.data.data);
       dispatch(addUser(res.data.data));
@@ -76,7 +76,7 @@ const Login = () => {
                       placeholder="First Name"
                       value={firstName}
                       onChange={(e) => {
-                        setFirstName(e.target.value), setError('');
+                        (setFirstName(e.target.value), setError(''));
                       }}
                       title="Only letters, numbers or dash"
                       // className="text-gray-500"
@@ -94,7 +94,7 @@ const Login = () => {
                       placeholder="Last Name"
                       value={lastName}
                       onChange={(e) => {
-                        setLastName(e.target.value), setError('');
+                        (setLastName(e.target.value), setError(''));
                       }}
                       title="Only letters, numbers or dash"
                       // className="text-gray-500"
@@ -133,7 +133,7 @@ const Login = () => {
                   maxLength="30"
                   value={email}
                   onChange={(e) => {
-                    setEmail(e.target.value), setError('');
+                    (setEmail(e.target.value), setError(''));
                   }}
                   title="Only letters, numbers or dash"
                   // className="text-gray-500"
@@ -170,7 +170,7 @@ const Login = () => {
                   maxLength="30"
                   value={password}
                   onChange={(e) => {
-                    setPassword(e.target.value), setError('');
+                    (setPassword(e.target.value), setError(''));
                   }}
                   title="Only letters, numbers or dash"
                 />
