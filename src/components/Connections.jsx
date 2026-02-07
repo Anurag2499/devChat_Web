@@ -4,6 +4,7 @@ import { BASE_URL } from '../utils/constant';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { addConnections } from '../utils/connectionSlice';
+import { Link } from 'react-router-dom';
 
 const Connections = () => {
   const connections = useSelector((store) => store.connections);
@@ -69,6 +70,11 @@ const Connections = () => {
                 </p>
               )}
               <p>{about}</p>
+            </div>
+            <div className="card-actions justify-center items-center pr-4">
+              <Link to={`/chat/${_id}`} className="btn btn-primary">
+                Chat
+              </Link>
             </div>
           </div>
         );
