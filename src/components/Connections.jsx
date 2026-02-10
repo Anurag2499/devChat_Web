@@ -1,13 +1,17 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BASE_URL } from '../utils/constant';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { addConnections } from '../utils/connectionSlice';
 import { Link } from 'react-router-dom';
+import { createSocketConnection } from '../utils/socket';
 
 const Connections = () => {
   const connections = useSelector((store) => store.connections);
+  const user = useSelector((store) => store.user);
+  const userId = user?._id;
+  const [onlineUsers, setOnlineUsers] = useState([]);
   console.log(connections);
   const dispatch = useDispatch();
 
@@ -22,6 +26,19 @@ const Connections = () => {
       console.log(err);
     }
   };
+
+  useEffect(() => {
+    if (!userId) return;
+    const socket = createSocketConnection();
+    socket.emit('join', { userId });
+    socket.on('onlineUsers', (users) => {
+      setOnlineUsers(users);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
   useEffect(() => {
     fetchConnections();
@@ -41,7 +58,8 @@ const Connections = () => {
       </div>
     );
   }
-  console.log(connections);
+  console.log('connection---', connections);
+  console.log('onlineUsers---', onlineUsers);
   return (
     <>
       <div>
@@ -63,7 +81,13 @@ const Connections = () => {
               />
             </figure>
             <div className="card-body">
-              <h2 className="card-title">{firstName + ' ' + lastName}</h2>
+              <h2 className="card-title">
+                {firstName + ' ' + lastName}
+                {onlineUsers.includes(_id) && (
+                  <span className="w-3 h-3 bg-green-500 rounded-full inline-block ml-2"></span>
+                )}
+              </h2>
+
               {age && gender && (
                 <p>
                   {age} years, {gender}

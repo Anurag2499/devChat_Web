@@ -18,6 +18,7 @@ const Chat = () => {
 
   //this useEffect will run when the component mounts and will establish a socket connection to the server. It emits a 'joinChat' event with the userId and targetUserId to join the appropriate chat room. When the component unmounts, it disconnects the socket to clean up resources.
   const [socket, setSocket] = useState(null);
+  const [chatDisabled, setChatDisabled] = useState(false);
 
   const fetchChatMessages = async () => {
     try {
@@ -57,11 +58,11 @@ const Chat = () => {
     fetchChatMessages();
   }, [userId]);
 
+  //this is the main useEffect that handles the socket connection and message reception.
   useEffect(() => {
     if (!user) return;
     const newSocket = createSocketConnection();
     setSocket(newSocket);
-    console.log('Socket receiveMessage listener set up');
     newSocket.emit('joinChat', {
       username: user?.firstName,
       userId,
@@ -114,6 +115,9 @@ const Chat = () => {
   useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+    if (messages.length > 30) {
+      setChatDisabled(true);
     }
   }, [messages]);
 
@@ -216,7 +220,7 @@ const Chat = () => {
           <button
             className="btn btn-neutral"
             onClick={handleSendMessage}
-            disabled={!user || !inputValue.trim()}
+            disabled={!user || !inputValue.trim() || chatDisabled}
             style={{ padding: '8px 16px' }}
           >
             Send
