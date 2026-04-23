@@ -122,7 +122,7 @@ const Chat = () => {
 
   return (
     <div className="h-full flex justify-center items-start px-2 pt-4 pb-4 bg-[#0f172a]">
-      <div className="w-full max-w-2xl h-[85vh] flex flex-col rounded-2xl overflow-hidden shadow-2xl border border-gray-700">
+      <div className="w-full max-w-2xl h-[75vh] flex flex-col rounded-2xl overflow-hidden shadow-2xl border border-gray-700">
         {/* 🔥 HEADER */}
         <div className="flex items-center gap-3 p-4 bg-gray-900 border-b border-gray-700">
           <div className="relative">
