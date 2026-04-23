@@ -12,7 +12,6 @@ const Body = () => {
   const navigate = useNavigate();
   const userData = useSelector((store) => store.user);
 
-  //Api call when userdata is not present in redux store
   const fetchUser = async () => {
     try {
       const res = await axios.get(BASE_URL + '/profile/view', {
@@ -20,7 +19,7 @@ const Body = () => {
       });
       dispatch(addUser(res.data));
     } catch (err) {
-      if (err.status === 401 || err.status === 400) {
+      if (err?.response?.status === 401 || err?.response?.status === 400) {
         navigate('/login');
       }
       console.log(err);
@@ -32,10 +31,15 @@ const Body = () => {
       fetchUser();
     }
   }, []);
+
   return (
-    <div>
+    <div className="h-screen flex flex-col overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
       <NavBar />
-      <Outlet />
+
+      <main className="flex-1 overflow-hidden">
+        <Outlet />
+      </main>
+
       <Footer />
     </div>
   );

@@ -11,48 +11,65 @@ const UserCard = ({ user, editFlag }) => {
 
   const handleSendRequest = async (status, userId) => {
     try {
-      const res = await axios.post(
+      await axios.post(
         BASE_URL + '/request/send/' + status + '/' + userId,
         {},
-        {
-          withCredentials: true,
-        }
+        { withCredentials: true },
       );
       dispatch(removeUserFromFeed(userId));
     } catch (err) {
       console.log(err);
     }
   };
+
   return (
-    <div className="card bg-base-300 w-96 shadow-2xl border-s-amber-950 p-6 mb-20">
-      <figure>
-        <img
-          // src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-          src={photoUrl || null}
-          alt="Shoes"
-        />
-      </figure>
-      <div className="card-body">
-        <h2 className="card-title">{firstName + ' ' + lastName}</h2>
-        {age && gender && <p>{age + ', ' + gender}</p>}
-        <p>{about}</p>
-        {!editFlag && (
-          <div className="card-actions justify-center">
-            <button
-              className="btn btn-error"
-              onClick={() => handleSendRequest('ignored', _id)}
-            >
-              Ignore
-            </button>
-            <button
-              className="btn btn-success"
-              onClick={() => handleSendRequest('interested', _id)}
-            >
-              Interested
-            </button>
-          </div>
+    <div className="relative w-full h-[480px] rounded-3xl overflow-hidden shadow-2xl">
+      {/* 🔥 Image */}
+      <img
+        src={photoUrl || 'https://via.placeholder.com/400'}
+        alt="user"
+        className="w-full h-full object-cover"
+      />
+
+      {/* 🔥 Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+
+      {/* 🔥 User Info */}
+      <div className="absolute bottom-20 left-4 right-4 text-white">
+        <h2 className="text-2xl font-bold">
+          {firstName} {lastName}
+          {age && <span className="font-normal">, {age}</span>}
+        </h2>
+
+        {gender && <p className="text-sm opacity-80 capitalize">{gender}</p>}
+
+        {about && (
+          <p className="text-sm mt-2 line-clamp-2 opacity-90">{about}</p>
         )}
       </div>
+
+      {/* 🔥 Action Buttons */}
+      {!editFlag && (
+        <div className="absolute bottom-5 left-0 right-0 flex justify-center gap-6">
+          {/* Skip */}
+          <button
+            onClick={() => handleSendRequest('ignored', _id)}
+            className="px-5 py-2 rounded-full bg-white/90 text-gray-800 font-medium shadow-lg backdrop-blur-md 
+      hover:scale-105 active:scale-95 transition"
+          >
+            Skip
+          </button>
+
+          {/* Interested */}
+          <button
+            onClick={() => handleSendRequest('interested', _id)}
+            className="px-5 py-2 rounded-full bg-gradient-to-r from-green-500 to-emerald-500 
+      text-white font-medium shadow-lg hover:scale-105 active:scale-95 transition"
+          >
+            🤝 Interested
+          </button>
+        </div>
+      )}
     </div>
   );
 };
